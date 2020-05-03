@@ -16,11 +16,6 @@ type Session struct {
 
 // Authenticate ...
 func (s *Session) Authenticate(username, password string) error {
-	_, err := s.client.Get("https://bankofmaldives.com.mv/internetbanking/login")
-	if err != nil {
-		return err
-	}
-
 	form := url.Values{}
 	form.Add("username", username)
 	form.Add("password", password)
@@ -46,17 +41,7 @@ func (s *Session) Authenticate(username, password string) error {
 		return fmt.Errorf("unexpected code: %d", authResponse.Code)
 	}
 
-	// the following 3 get requests are some weird gymnastics to get the server to actually log us in.
-	_, err = s.client.Get("https://www.bankofmaldives.com.mv/internetbanking/api/profile")
-	if err != nil {
-		return err
-	}
-
-	_, err = s.client.Get("https://www.bankofmaldives.com.mv/internetbanking/api/dashboard")
-	if err != nil {
-		return err
-	}
-
+	// the following is some weird gymnastics to get the server to allow subsequent requests to the history endpoint.
 	_, err = s.client.Get("https://www.bankofmaldives.com.mv/internetbanking/api/profile")
 	if err != nil {
 		return err
