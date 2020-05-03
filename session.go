@@ -1,4 +1,4 @@
-package bml
+package bmlgo
 
 import (
 	"encoding/json"

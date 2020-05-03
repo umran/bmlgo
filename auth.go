@@ -1,4 +1,4 @@
-package bml
+package bmlgo
 
 // AuthResponse ...
 type AuthResponse struct {
