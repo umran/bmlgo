@@ -83,9 +83,7 @@ func (s *Session) GetStatement(accountID string, from, to time.Time, page int) (
 	fromDate := from.Format("20060102")
 	toDate := to.Format("20060102")
 
-	url := fmt.Sprintf("https://www.bankofmaldives.com.mv/internetbanking/api/account/%s/history/%s/%s/%d", accountID, fromDate, toDate, page)
-
-	res, err := s.client.Get(url)
+	res, err := s.client.Get(fmt.Sprintf("https://www.bankofmaldives.com.mv/internetbanking/api/account/%s/history/%s/%s/%d", accountID, fromDate, toDate, page))
 	if err != nil {
 		return nil, err
 	}
