@@ -51,7 +51,7 @@ func (s *Session) Authenticate(username, password string) error {
 }
 
 // GetTodayHistory ...
-func (s *Session) GetTodayHistory(accountID string) ([]*HistoryItem, error) {
+func (s *Session) GetTodayHistory(accountID string) (*HistoryPayload, error) {
 	res, err := s.client.Get(fmt.Sprintf("https://www.bankofmaldives.com.mv/internetbanking/api/account/%s/history/today", accountID))
 	if err != nil {
 		return nil, err
@@ -61,7 +61,7 @@ func (s *Session) GetTodayHistory(accountID string) ([]*HistoryItem, error) {
 		return nil, errors.New("non 200 status code")
 	}
 
-	historyResponse := new(HistoryResponse)
+	historyResponse := &Response{Payload: &HistoryPayload{}}
 	err = json.NewDecoder(res.Body).Decode(historyResponse)
 	if err != nil {
 		return nil, err
@@ -75,7 +75,7 @@ func (s *Session) GetTodayHistory(accountID string) ([]*HistoryItem, error) {
 		return nil, fmt.Errorf("unexpected code: %d", historyResponse.Code)
 	}
 
-	return historyResponse.Payload.History, nil
+	return historyResponse.Payload.(*HistoryPayload), nil
 }
 
 // GetStatement ...
@@ -92,7 +92,7 @@ func (s *Session) GetStatement(accountID string, from, to time.Time, page int) (
 		return nil, errors.New("non 200 status code")
 	}
 
-	historyResponse := new(HistoryResponse)
+	historyResponse := &Response{Payload: &HistoryPayload{}}
 	err = json.NewDecoder(res.Body).Decode(historyResponse)
 	if err != nil {
 		return nil, err
@@ -106,7 +106,38 @@ func (s *Session) GetStatement(accountID string, from, to time.Time, page int) (
 		return nil, fmt.Errorf("unexpected code: %d", historyResponse.Code)
 	}
 
-	return historyResponse.Payload, nil
+	return historyResponse.Payload.(*HistoryPayload), nil
+}
+
+// GetActivity ...
+func (s *Session) GetActivity(from, to time.Time, page int) (*ActivityPayload, error) {
+	fromDate := from.Format("01/02/2006")
+	toDate := to.Format("01/02/2006")
+
+	res, err := s.client.Get(fmt.Sprintf("https://www.bankofmaldives.com.mv/internetbanking/api/activities?min_date=%s&max_date=%s&page=%d", fromDate, toDate, page))
+	if err != nil {
+		return nil, err
+	}
+
+	if res.StatusCode != 200 {
+		return nil, errors.New("non 200 status code")
+	}
+
+	activityResponse := &Response{Payload: &ActivityPayload{}}
+	err = json.NewDecoder(res.Body).Decode(activityResponse)
+	if err != nil {
+		return nil, err
+	}
+
+	if activityResponse.Success == false {
+		return nil, errors.New("get activity unsuccessful at the application level")
+	}
+
+	if activityResponse.Code != 0 {
+		return nil, fmt.Errorf("unexpected code: %d", activityResponse.Code)
+	}
+
+	return activityResponse.Payload.(*ActivityPayload), nil
 }
 
 // PostTransferRequest ...
