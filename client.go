@@ -23,8 +23,8 @@ func NewClient(username, password string) (*Client, error) {
 	}, nil
 }
 
-// NewStatementItems ...
-func (c *Client) NewStatementItems(accountID, cursor string) ([]*HistoryItem, string, error) {
+// GetNewStatementItems ...
+func (c *Client) GetNewStatementItems(accountID, cursor string) ([]*HistoryItem, string, error) {
 	to := time.Now()
 	from := to.AddDate(-1, 0, 0)
 	data := make([]*HistoryItem, 0)
