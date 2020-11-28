@@ -2,18 +2,15 @@ package bmlgo
 
 import "net/url"
 
-// Transfer ...
-type Transfer struct {
+type transfer struct {
 	request url.Values
 }
 
-// GetRequestForm ...
-func (t *Transfer) GetRequestForm() url.Values {
+func (t *transfer) getRequestForm() url.Values {
 	return t.request
 }
 
-// GenerateCompletionForm ...
-func (t *Transfer) GenerateCompletionForm(otp string) url.Values {
+func (t *transfer) generateCompletionForm(otp string) url.Values {
 	form := url.Values{}
 
 	form["currency"] = t.request["currency"]
@@ -31,8 +28,7 @@ func (t *Transfer) GenerateCompletionForm(otp string) url.Values {
 	return form
 }
 
-// NewTransfer ...
-func NewTransfer(debitAmount, debitAccount, creditAccount string) *Transfer {
+func newTransfer(debitAmount, debitAccount, creditAccount string) *transfer {
 	request := url.Values{}
 	request.Add("transfertype", "IAT")
 	request.Add("channel", "email")
@@ -41,7 +37,7 @@ func NewTransfer(debitAmount, debitAccount, creditAccount string) *Transfer {
 	request.Add("creditAccount", creditAccount)
 	request.Add("debitAccount", debitAccount)
 
-	return &Transfer{
+	return &transfer{
 		request: request,
 	}
 }
