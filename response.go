@@ -8,6 +8,9 @@ type Response struct {
 	Payload interface{} `json:"payload"`
 }
 
+// AuthPayload ...
+type AuthPayload int
+
 // HistoryPayload ...
 type HistoryPayload struct {
 	CurrentPage int            `json:"currentPage"`

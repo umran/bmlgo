@@ -30,7 +30,7 @@ func (s *Session) Authenticate(username, password string) error {
 		return errors.New("non 200 status code received")
 	}
 
-	authResponse := new(AuthResponse)
+	authResponse := &Response{}
 	json.NewDecoder(res.Body).Decode(authResponse)
 
 	if authResponse.Success == false {
