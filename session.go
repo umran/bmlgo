@@ -152,7 +152,7 @@ func (s *Session) PostTransferRequest(requestForm url.Values) error {
 		return errors.New("non 200 status code received")
 	}
 
-	response := new(TransferRequestResponse)
+	response := &Response{}
 	json.NewDecoder(res.Body).Decode(response)
 
 	if response.Success == false {
@@ -178,7 +178,7 @@ func (s *Session) PostTransferCompletion(completionForm url.Values) (*TransferCo
 		return nil, errors.New("non 200 status code received")
 	}
 
-	response := new(TransferCompletionResponse)
+	response := &Response{Payload: &TransferCompletionPayload{}}
 	json.NewDecoder(res.Body).Decode(response)
 
 	if response.Success == false {
@@ -189,7 +189,7 @@ func (s *Session) PostTransferCompletion(completionForm url.Values) (*TransferCo
 		return nil, fmt.Errorf("unexpected code: %d", response.Code)
 	}
 
-	return response.Payload, nil
+	return response.Payload.(*TransferCompletionPayload), nil
 }
 
 // NewSession ...

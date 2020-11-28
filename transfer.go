@@ -2,27 +2,6 @@ package bmlgo
 
 import "net/url"
 
-// TransferRequestResponse ...
-type TransferRequestResponse struct {
-	Success bool   `json:"success"`
-	Code    int    `json:"code"`
-	Message string `json:"message"`
-}
-
-// TransferCompletionResponse ...
-type TransferCompletionResponse struct {
-	Success bool                       `json:"success"`
-	Code    int                        `json:"code"`
-	Message string                     `json:"message"`
-	Payload *TransferCompletionPayload `json:"payload"`
-}
-
-// TransferCompletionPayload ...
-type TransferCompletionPayload struct {
-	Reference string `json:"reference"`
-	Timestamp string `json:"timestamp"`
-}
-
 // Transfer ...
 type Transfer struct {
 	request url.Values

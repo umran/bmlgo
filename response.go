@@ -72,3 +72,9 @@ type ActivityDataContent struct {
 	Type  string `json:"type"`
 	Value string `json:"value"`
 }
+
+// TransferCompletionPayload ...
+type TransferCompletionPayload struct {
+	Reference string `json:"reference"`
+	Timestamp string `json:"timestamp"`
+}
