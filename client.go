@@ -2,6 +2,7 @@ package bmlgo
 
 import (
 	"net/url"
+	"sync"
 	"time"
 
 	"github.com/umran/decimal"
@@ -9,6 +10,7 @@ import (
 
 // Client ...
 type Client struct {
+	mutex    *sync.Mutex
 	username string
 	password string
 	session  *session
@@ -22,6 +24,7 @@ func NewClient(username, password string) (*Client, error) {
 	}
 
 	return &Client{
+		new(sync.Mutex),
 		username,
 		password,
 		session,
@@ -112,6 +115,8 @@ func (c *Client) CompleteTransfer(request url.Values, otp string) (*TransferComp
 
 // helper method to reauthenticate session
 func (c *Client) reauthenticate() error {
+	c.mutex.Lock()
+	defer c.mutex.Unlock()
 	return c.session.authenticate(c.username, c.password)
 }
 
