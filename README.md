@@ -8,7 +8,7 @@ go get -u github.com/umran/bmlgo
 ```
 
 ## Usage
-### Creating a Client
+### Instantiating a Client
 Before interacting with the API a Client must be instantiated
 ```go
 import "github.com/umran/bmlgo"
@@ -41,3 +41,6 @@ To get all items posted within the past year (up to the current date), we must l
 ```go
 client.GetNewStatementItems("accountID", "")
 ```
+
+### Making Money Transfers
+Money transfers can be instantiated by calling the client's `InitiateTransfer` method.
