@@ -69,12 +69,11 @@ search:
 		time.Sleep(time.Second)
 	}
 
-	nextCursor := cursor
 	if len(data) > 0 {
-		nextCursor = data[0].ID
+		cursor = data[0].ID
 	}
 
-	return data, nextCursor, nil
+	return data, cursor, nil
 }
 
 // InitiateTransfer ...
