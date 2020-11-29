@@ -45,7 +45,7 @@ client.GetNewStatementItems("accountID", "")
 ### Making Money Transfers
 Money transfers can be initiated by calling the client's `InitiateTransfer` method. The amount of the transfer must be provided in Laari as an integer. The debit account and credit accounts must also be provided.
 
-To complete a transfer we must call the client's `CompleteTransfer` method along with the transfer form returned by `InitiateTransfer` and the OTP received via email or SMS.
+To complete a transfer we must call the client's `CompleteTransfer` method with the transfer form returned by `InitiateTransfer` and the OTP received via email or SMS.
 
 Here's an example where we transfer 1 Rufiyaa (100 Laari) from "AccountA" to "AccountB"
 ```go
