@@ -39,7 +39,14 @@ for _, item := range items {
 
 To get all items posted within the past year (up to the current date), we must leave the cursor blank
 ```go
-client.GetNewStatementItems("accountID", "")
+allItems, nextCursor := client.GetNewStatementItems("accountID", "", nil)
+```
+
+To get all non-negative entries (inflows) that were posted after a specified item
+```go
+nonNegativeEntries, nextCursor := client.GetNewStatementItems("accountID", "cursor", func(item *bmlgo.HistoryItem) bool {
+    return !item.Minus
+})
 ```
 
 ### Making Money Transfers
