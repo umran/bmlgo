@@ -32,7 +32,7 @@ func NewClient(username, password string) (*Client, error) {
 }
 
 // GetNewStatementItems ...
-func (c *Client) GetNewStatementItems(accountID, cursor string) ([]*HistoryItem, string, error) {
+func (c *Client) GetNewStatementItems(accountID, cursor string, filter func(*HistoryItem) bool) ([]*HistoryItem, string, error) {
 	to := time.Now()
 	from := to.AddDate(-1, 0, 0)
 	data := make([]*HistoryItem, 0)
@@ -51,14 +51,26 @@ search:
 			return nil, "", err
 		}
 
-		if len(statement.History) == 0 {
+		var filteredItems []*HistoryItem
+		if filter != nil {
+			filteredItems = make([]*HistoryItem, 0, len(statement.History))
+			for _, item := range statement.History {
+				if filter(item) {
+					filteredItems = append(filteredItems, item)
+				}
+			}
+		} else {
+			filteredItems = statement.History
+		}
+
+		if len(filteredItems) == 0 {
 			if cursor == "" {
 				break search
 			}
 			return nil, "", ErrorCursorUnreachable
 		}
 
-		for _, item := range statement.History {
+		for _, item := range filteredItems {
 			if item.ID == cursor {
 				break search
 			}

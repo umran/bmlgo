@@ -23,11 +23,11 @@ func main() {
 
 ### Getting New Statement Items
 New items posted to an account's statement can be retrieved by calling the client's `GetNewStatementItems` method.
-This method returns either all items posted to the account within the past year (up to the current date) or all items posted after a specified item. This method also returns a cursor, which is the ID of the most recently posted item.
+This method returns either all items posted to the account within the past year (up to the current date) or all items posted after a specified item. This method also returns a cursor, which is the ID of the most recently posted item. The final argument is an optional filter over statement items and ensures that only items that pass the filter are returned.
 
 To get all items posted after a specified item, we must provide the item's ID as the cursor
 ```go
-items, nextCursor, err := client.GetNewStatementItems("accountID", "cursor")
+items, nextCursor, err := client.GetNewStatementItems("accountID", "cursor", nil)
 if err != nil {
     panic("failed to get new statement items", err)
 }
